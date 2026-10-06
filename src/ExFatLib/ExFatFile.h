@@ -788,6 +788,18 @@ class ExFatFile {
 
   /** \return The valid number of bytes in a file. */
   uint64_t validLength() const { return m_validLength; }
+  /** Increase the valid data length of a file.
+   *
+   * Bytes past the valid data length read as zero, and a write past it
+   * first zero fills the gap.  Raising the valid data length makes the
+   * existing contents of the allocated clusters part of the file data.
+   *
+   * \param[in] length New valid data length.  Must not be less than
+   * validLength() or greater than dataLength().
+   *
+   * \return true for success or false for failure.
+   */
+  bool setValidLength(uint64_t length);
   /** Write a string to a file. Used by the Arduino Print class.
    * \param[in] str Pointer to the string.
    * Use getWriteError to check for errors.
