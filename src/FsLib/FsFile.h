@@ -886,6 +886,20 @@ class FsBaseFile {
   uint64_t validLength() const {
     return m_fFile ? m_fFile->fileSize() : m_xFile ? m_xFile->validLength() : 0;
   }
+  /** Increase the valid data length of an exFAT file.
+   *
+   * FAT files have no separate valid data length, so for them this only
+   * succeeds if \a length equals the file size.
+   *
+   * \param[in] length New valid data length.
+   *
+   * \return true for success or false for failure.
+   */
+  bool setValidLength(uint64_t length) {
+    return m_fFile   ? length == m_fFile->fileSize()
+           : m_xFile ? m_xFile->setValidLength(length)
+                     : false;
+  }
   /** Write a string to a file. Used by the Arduino Print class.
    * \param[in] str Pointer to the string.
    * Use getWriteError to check for errors.
